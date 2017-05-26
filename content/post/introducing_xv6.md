@@ -1,7 +1,7 @@
 +++
 date = "2017-04-24"
 title = "Introducing xv6"
-tags = ["OSDev", "Programming"]
+tags = ["OS Development"]
 +++
 
 # xv6とは
@@ -12,7 +12,6 @@ ANSI Cで書かれ、x86で動きます。マルチコアにも対応もして�
 
 ソースコードは[GitHub](https://github.com/mit-pdos/xv6-public)でMITライセンス下で公開されています。
 [PDF版](https://pdos.csail.mit.edu/6.828/2014/xv6/xv6-rev8.pdf)もあります。
-
 [xv6のコードと、OSの重要概念の解説](https://pdos.csail.mit.edu/6.828/2014/xv6/book-rev8.pdf)や、
 [MITでの授業で使われた資料](https://pdos.csail.mit.edu/6.828/2014/schedule.html)も入手できます。
 

@@ -5,8 +5,12 @@ author = "Hidehito Yabuuchi"
 copyright = "&copy; 2017. All rights reserved."
 theme = "blackburn"
 canonifyurls = true
-paginate = 10
+paginate = 5
 languageCode = "en-us"
+
+hasCJKLanguage = true # Shorter summary
+math = true
+PygmentsCodeFences = true
 
 [indexes]
 tag = "tags"
@@ -14,6 +18,7 @@ tag = "tags"
 
 [params]
 subtitle = ""
+dateFormat = "02 Jan 2006"
 
 [menu]
 [[menu.main]]
