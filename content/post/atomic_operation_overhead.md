@@ -172,11 +172,11 @@ storeのみを待つモードもあるので、load前にはこっちを使っ�
 
 <script src="https://gist.github.com/ordovicia/152afd43579bdd4888858ebfa157c470.js"></script>
 
-実行環境は、
+実行環境は以下の通りです。
 
-* `macOS Yosemite (Darwin Kernel Version 15.6.0: Wed Nov  2 20:30:56 PDT 2016; root:xnu-3248.60.11.1.2~2/RELEASE_X86_64 x86_64 i386)`でg++ 6.3.0を使い`-O3`でコンパイル
-* `Ubuntu 16.04 `で
-* `Jetson TX1 (Linux tegra-ubuntu 3.10.96-tegra #1 SMP PREEMPT Wed Sep 28 17:51:08 PDT 2016 aarch64 aarch64 aarch64 GNU/Linux)`でg++ 5.4.0を使い`-O3`でコンパイル
+* `macOS Yosemite (Darwin Kernel Version 15.6.0: Tue Apr 11 16:00:51 PDT 2017; root:xnu-3248.60.11.5.3~1/RELEASE_X86_64)`で `g++ 7.1.0` を使い`-O3`でコンパイル
+* `Ubuntu 16.04` で `g++ 5.4.0` を使い`-O3` でコンパイル
+* `Jetson TX1 (Linux tegra-ubuntu 3.10.96-tegra #1 SMP PREEMPT Wed Sep 28 17:51:08 PDT 2016 aarch64 aarch64 aarch64 GNU/Linux)` で `jetson_clocks.sh` を実行後、`g++ 5.4.0` を使い`-O3`でコンパイル
 
 結果は次のようになりました。
 ループ回数を横軸に、非atomicとatomicの比率を縦軸にとっています。
