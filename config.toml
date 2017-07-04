@@ -1,6 +1,6 @@
 baseurl = "/"
 # baseurl = "https://github.com/ordovicia.github.io/"
-title = "TIL"
+title = "外部記憶"
 author = "Hidehito Yabuuchi"
 copyright = "&copy; 2017. All rights reserved."
 theme = "blackburn"
