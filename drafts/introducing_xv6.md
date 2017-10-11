@@ -2,7 +2,6 @@
 date = "2017-04-24"
 title = "Introducing xv6"
 tags = ["OS Development"]
-draft = true
 +++
 
 # xv6とは
