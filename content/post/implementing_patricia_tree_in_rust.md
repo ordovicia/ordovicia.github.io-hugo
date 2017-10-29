@@ -1,6 +1,6 @@
 +++
 date = "2017-01-09"
-title = "Implementing Patricia Tree in Rust"
+title = "パトリシア木の実装 in Rust"
 tags = ["Programming", "Rust"]
 +++
 

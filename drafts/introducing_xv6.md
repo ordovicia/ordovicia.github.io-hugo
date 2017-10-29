@@ -1,6 +1,6 @@
 +++
 date = "2017-04-24"
-title = "Introducing xv6"
+title = "Xv6の紹介"
 tags = ["OS Development"]
 +++
 

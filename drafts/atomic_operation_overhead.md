@@ -1,6 +1,6 @@
 +++
 date = "2016-12-26"
-title = "Atomic operation overhead"
+title = "アトミック操作のオーバーヘッド"
 tags = ["Programming"]
 +++
 

@@ -1,6 +1,6 @@
 +++
 date = "2015-12-22"
-title = "Building Boost with GCC on OSX Yosemite"
+title = "OS X Yosemite上でBoostをGCCでビルドする"
 tags = ["Programming", "GCC", "Boost", "macOS"]
 +++
 

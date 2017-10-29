@@ -1,6 +1,6 @@
 +++
 date = "2017-01-20"
-title = "Jetson TX1 initial setup"
+title = "Jetson TX1 セットアップ"
 tags = ["Jetson TX1"]
 +++
 

@@ -1,6 +1,6 @@
 +++
 date = "2016-12-31"
-title = "Well-founded ordered set"
+title = "整礎順序集合"
 tags = ["Program semantics"]
 +++
 

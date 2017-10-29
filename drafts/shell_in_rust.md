@@ -1,5 +1,5 @@
 +++
 date = "2017-10-12"
-title = "Implement Shell in Rust"
+title = "シェルの実装 in Rust"
 tags = ["Rust", "System Programming"]
 +++
