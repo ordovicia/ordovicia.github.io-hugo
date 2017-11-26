@@ -1,7 +1,7 @@
 +++
 date = "2017-10-12"
 title = "シェルの実装 in Rust"
-tags = ["Rust", "System Programming"]
+tags = ["Rust", "Programming"]
 +++
 
 ## 概要
@@ -49,13 +49,15 @@ nomを使うと簡単にパーサーが書けるのですが、今回は失敗�
 例えば `cmd < file0 > file1` は `< file0 cmd > file1` とも書けます。
 nomでこれに対応するのは面倒なので、今回は `cmd0 < file0 > file1` の形式（にパイプを加えたもの）のみ認識するようになっています。
 
+シェルの文法はそんなに難しくないので、パーサーを手書きすれば自由度にうまく対処できたのではないかと思います。
+
 ## ジョブ実行
 
 ジョブとプロセスの構造は次のようになっています。
 
 プロセスは `Input::Pipe`, `Output::Pipe` によって他のプロセスとパイプで繋がり、`Input::Redirect`, `Input::Redirect` によってファイルリダイレクションを表しています。
 
-```
+```rust
 pub(super) struct Job {
     process_list: process::Process,
     mode: JobMode,
@@ -86,7 +88,7 @@ pub(crate) enum Output {
 パイプやリダイレクトから `std::process::Stdin` を作るには、生のファイルディスクリプタを経由する必要があるようです。
 この操作はunsafeになっています。
 
-```
+```rust
 use std::process as stdproc;
 
 pub(super) fn spawn(&self) -> Result<ChildList> {
