@@ -1,12 +1,12 @@
 +++
 date = "2017-04-24"
-title = "Xv6の紹介"
-tags = ["OS Development"]
+title = "xv6の紹介"
+tags = ["OS development"]
 +++
 
 # xv6とは
 [xv6](https://pdos.csail.mit.edu/6.828/2014/xv6.html)は、MITで教材用に作られたコンパクトなOSです。
-他のいくつかの大学でも使われているようです[[xv6 - Wikipedia](https://ja.wikipedia.org/wiki/Xv6)]。
+他のいくつかの大学でも使われているようです\[[xv6 - Wikipedia](https://ja.wikipedia.org/wiki/Xv6)\]。
 
 ANSI Cで書かれ、x86で動きます。マルチコアにも対応もしているようです。
 
@@ -16,8 +16,7 @@ ANSI Cで書かれ、x86で動きます。マルチコアにも対応もして�
 [MITでの授業で使われた資料](https://pdos.csail.mit.edu/6.828/2014/schedule.html)も入手できます。
 
 # xv6のビルド
-このxv6をいじってみます。
-基本的に、macOS 10.11.6上のQEMU上で動かします。
+macOS 10.11.6上のQEMU上で動かします。
 
 macOSはx64でELFじゃないので、xv6のビルド・実行にはクロスコンパイルが必要です。
 環境構築については[こちら](http://sairoutine.hatenablog.com/entry/2016/09/02/232318)の方法がたいへん参考になります。
