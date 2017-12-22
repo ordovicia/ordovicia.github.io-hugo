@@ -22,7 +22,7 @@ Readline alternativeの [linenoise](https://github.com/antirez/linenoise) を使
 パーサコンビネータの [nom](https://crates.io/crates/nom) を使いました。
 だいたい以下のような文法です。
 
-```
+```text
 arg_list     := token+
 
 redir_in     := "<" token
@@ -139,3 +139,5 @@ fn spawn_one(&self, stdin: stdproc::Stdio, stdout: stdproc::Stdio) -> Result<Chi
 ## Future Work: バックグラウンド実行
 
 バックグラウンド実行にも対応しようと思ったのですが、 `std::process` だけではできず、libcバインディングが必要になるようでした。
+
+バックグラウンド実行くらいは対応しないとシェルを書いたとは言えないですね......。
