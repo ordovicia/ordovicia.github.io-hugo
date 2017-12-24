@@ -1,7 +1,7 @@
 +++
 date = "2015-12-21"
 title = "Arch Linux on Raspberry Pi 2 - 開発用セットアップ"
-tags = ["Arch Linux", "Raspberry Pi"]
+tags = ["Linux", "Arch Linux", "Raspberry Pi"]
 +++
 
 # 開発環境のセットアップ

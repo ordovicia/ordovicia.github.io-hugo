@@ -1,7 +1,7 @@
 +++
 date = "2015-12-10"
 title = "Arch Linux on Raspberry Pi 2 - 初期セットアップ"
-tags = ["Arch Linux", "Raspberry Pi"]
+tags = ["Linux", "Arch Linux", "Raspberry Pi"]
 +++
 
 先日Raspberry Pi 2を買いました。
