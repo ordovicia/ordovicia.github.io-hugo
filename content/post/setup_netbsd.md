@@ -1,5 +1,5 @@
 +++
-date = "2017-12-24"
+date = "2017-12-25"
 title = "NetBSDの初期設定"
 tags = ["BSD", "NetBSD"]
 +++
