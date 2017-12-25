@@ -9,6 +9,7 @@ LinuxとNetBSDをデュアルブートする方法をメモしておきます。
 ## 環境
 
 * DELL Latitude E6540
+    * Intel Core i7-4610M (Haswell)
     * BIOS (Legacy boot)
 * Ubuntu Desktop 16.04 と NetBSD 7.1 をデュアルブート
 
@@ -25,6 +26,9 @@ USBメモリから起動してインストーラを実行します。
 基本的な流れは、[NetBSD公式のインストールガイド](https://www.netbsd.org/docs/guide/en/chap-exinst.html)や
 [webzoit.netさん](https://www.webzoit.net/hp/it/internet/homepage/env/os/bsd_unix_linux/netbsd/03_install)がたいへん参考になります。
 そこで、デュアルブートのために必要な手順のみ説明します。
+
+ちなみに、インストールの終盤でユーザーを追加できます。
+`wheel`グループへの追加などもできるので、ここで設定しておくと便利です。
 
 ### NetBSDのブートローダをインストールしない
 
