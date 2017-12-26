@@ -16,6 +16,20 @@ NetBSDの初期設定についてメモしておきます。
     * BIOS (Legacy boot)
 * NetBSD 7.1
 
+## コンソール上でCaps LockをCtrlにする
+
+以下を実行すると、コンソール上でCaps LockがCtrlとしてふるまいます。
+
+```shell
+/sbin/wsconsctl -w map+='keysym Caps_Lock = Control_R' > /dev/null
+```
+
+起動時にこれを自動で設定するためには、`/etc/rc.local` に次を追記します。
+
+```shell
+/sbin/wsconsctl -w map+='keysym Caps_Lock = Control_R' > /dev/null
+```
+
 ## DHCP環境下での有線LAN設定
 
 ### ホスト名の設定
@@ -32,10 +46,7 @@ dhcpcd=yes
 
 `dhcpcd`というのがDHCPクライアントのようです。
 
-### 動作確認
-
-以上で設定は終わりです。
-`shutdown -r now` でNetBSDを再起動したあと、`ifconfig`でIPアドレスが振られていることが確認できます。
+NetBSDの再起動後、`ifconfig`でIPアドレスが振られていることが確認できます。
 
 ## パッケージマネージャの設定
 
@@ -82,11 +93,23 @@ Linuxの`/etc/sudoers`に相当するファイルが、NetBSDでは`/usr/pkg/etc
 
 のコメントを外します。
 
-## コンソールでCaps LockをCtrlにする
+## `pkgin`の導入
 
-コンソールでCaps LockをCtrlに変更するには、`/etc/rc.local` に次を追記します。
+上で使っている`pkg_add`など、NetBSD標準のパッケージマネージャは正直使いづらいです。
+そこで`pkgin`を導入します。
 
 ```shell
-echo 'keysym Caps_Lock = Control_R'
-/sbin/wsconsctl -w map+='keysym Caps_Lock = Control_R' > /dev/null
+# pkg_add -v pkgin
+# pkgin update
 ```
+
+Debian系での`apt`と同じ感覚で使えます。
+たとえば、
+
+* リポジトリの更新 `pkgin update` （省略形 `pkgin up`）
+* インストール済みパッケージの更新 `pkgin upgrade` （省略形 `pkgin ug`）
+* パッケージのインストール `pkgin install package` （省略形 `pkgin in`）
+* パッケージの削除 `pkgin remove package` （省略形 `pkgin rm`）
+* パッケージの検索 `pkgin search keywords` （省略形 `pkgin se`）
+
+などが使えます。
