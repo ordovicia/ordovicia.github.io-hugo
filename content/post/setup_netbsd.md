@@ -24,11 +24,7 @@ NetBSDの初期設定についてメモしておきます。
 /sbin/wsconsctl -w map+='keysym Caps_Lock = Control_R' > /dev/null
 ```
 
-起動時にこれを自動で設定するためには、`/etc/rc.local` に次を追記します。
-
-```shell
-/sbin/wsconsctl -w map+='keysym Caps_Lock = Control_R' > /dev/null
-```
+起動時にこれを自動で設定するために、`/etc/rc.local` にこの行を追記します。
 
 ## DHCP環境下での有線LAN設定
 
@@ -98,7 +94,7 @@ Linuxの`/etc/sudoers`に相当するファイルが、NetBSDでは`/usr/pkg/etc
 上で使っている`pkg_add`など、NetBSD標準のパッケージマネージャは正直使いづらいです。
 そこで`pkgin`を導入します。
 
-```shell
+```console
 # pkg_add -v pkgin
 # pkgin update
 ```
