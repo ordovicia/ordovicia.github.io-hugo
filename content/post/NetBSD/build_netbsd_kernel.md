@@ -24,9 +24,10 @@ NetBSD 7.1のカーネルに手を加える必要があったので、NetBSDの�
 配布されているISOを展開する方法もありますが、今回はCVSをつかいました。
 
 ```shell
-$ cd /usr
-$ export CVS_RSH=ssh
-$ cvs -d anoncvs@anoncvs.NetBSD.org:/cvsroot co -r netbsd-7-1 -P src
+# cd /usr
+# export CVS_RSH=ssh
+# export CVSROOT="anoncvs@anoncvs.NetBSD.org:/cvsroot"
+# cvs checkout -r netbsd-7-1-RELEASE -P src
 ```
 
 `-r netbsd-7-1` オプションでバージョンが指定できるようです。
@@ -41,9 +42,9 @@ $ cvs -d anoncvs@anoncvs.NetBSD.org:/cvsroot co -r netbsd-7-1 -P src
 今回は同じバージョン使うので必要ありませんが、必要な場合は以下のようにすればツールチェインがビルドできます。
 
 ```shell
-$ mkdir /usr/obj /usr/tools
-$ cd /usr/src
-$ ./build.sh -O /usr/obj -T /usr/tools -U -u tools
+# mkdir /usr/obj /usr/tools
+# cd /usr/src
+# ./build.sh -O /usr/obj -T /usr/tools -U -u tools
 ```
 
 ## カーネルのビルド
@@ -56,14 +57,14 @@ ISOとかUSBイメージでインストールされるカーネルはGENERIC con
 configファイルを自分用に編集したい場合はこれをもとにするといいでしょう。
 
 ```shell
-$ cd /usr/src/sys/arch/amd64/conf/
-$ cp GENERIC MYCONF
+# cd /usr/src/sys/arch/amd64/conf/
+# cp GENERIC MYCONF
 ```
 
 使いたいconfigファイルを指定して `config` を走らせると、コンパイル用のディレクトリが生成されます。
 
 ```shell
-$ config MYCONF
+# config MYCONF
 Build directory is ../compile/MYCONF
 Don't forget to run "make depend"
 ```
@@ -71,9 +72,9 @@ Don't forget to run "make depend"
 そしてこのディレクトリの中で `make depend`, `make` を走らせます。
 
 ```shell
-$ cd ../compile/MYCONF/
-$ make depend
-$ make 2>&1 | tee make_20171228_0.log
+# cd ../compile/MYCONF/
+# make depend
+# make
 ```
 
 環境によりますが、5分くらいでビルドできました。
@@ -84,8 +85,8 @@ $ make 2>&1 | tee make_20171228_0.log
 今回は、既存のカーネルを上書きしないよう違う名前でおいておきます。
 
 ```shell
-$ cp netbsd /my_netbsd
-$ ls /*netbsd
+# cp netbsd /my_netbsd
+# ls /*netbsd
 /netbsd	    /my_netbsd
 ```
 
