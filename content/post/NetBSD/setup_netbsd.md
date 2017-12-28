@@ -5,7 +5,7 @@ tags = ["BSD", "NetBSD"]
 +++
 
 NetBSDの初期設定についてメモしておきます。
-[furandon_pigさんのQiitaの記事](https://qiita.com/furandon_pig/items/5479293cb21d6fd9f17c)を参考にしています。
+[NetBSDインストール後の環境設定 - furandon_pigさんのQiita記事](https://qiita.com/furandon_pig/items/5479293cb21d6fd9f17c)を参考にしています。
 
 基本的にrootで作業します。
 
