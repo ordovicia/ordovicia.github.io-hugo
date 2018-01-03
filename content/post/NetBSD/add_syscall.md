@@ -58,7 +58,7 @@ file    kern/sys_nop.c
 
 ## ビルド
 
-[NetBSDカーネルのビルド]({{< ref "build_netbsd_kernel.md" >}})を参照してください。
+[NetBSDカーネルのビルド]({{< ref "build_kernel.md" >}})を参照してください。
 いちど`configure`からやり直すとうまくいくようです。
 
 ## 動作確認
