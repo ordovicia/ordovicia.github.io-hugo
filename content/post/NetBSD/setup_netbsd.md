@@ -41,6 +41,7 @@ dhcpcd=yes
 ```
 
 `dhcpcd`というのがDHCPクライアントのようです。
+DHCPサーバーの`dhcpd`ではありません。
 
 NetBSDの再起動後、`ifconfig`でIPアドレスが振られていることが確認できます。
 
