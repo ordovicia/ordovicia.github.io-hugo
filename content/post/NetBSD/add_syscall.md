@@ -23,7 +23,7 @@ NetBSDにシステムコールを追加してみます。
 481 STD RUMP    { int|sys||nop(void); }
 ```
 
-追記後、`makesyscalls.sh`を実行します。
+追記後、`sys/kern/makesyscalls.sh`を実行します。
 これがおおかたの作業をやってくれるようです。
 
 ```console
@@ -37,7 +37,7 @@ NetBSDにシステムコールを追加してみます。
 #include <sys/syscallargs.h>
 #include <sys/systm.h>
 
-int	sys_nop(struct lwp *, const void *, register_t *)
+int	sys_nop(struct lwp* _lwp, const void* _args, register_t* _regs)
 {
     printf("nop called\n");
     return 0;
@@ -50,7 +50,7 @@ nopとは言うものの、デバッグ用に`printf()`しています。
 関数プロトタイプは、`makesyscalls.sh`を実行したときに`sys/sys/syscallargs.h`に追記されたものに合わせます。
 
 今回は新しいファイルを追加したので、ビルドするファイルのリストにそのファイルを追加しておきます。
-編集するファイルは`sys/confkj/files`です。
+編集するファイルは`sys/conf/files`です。
 
 ```text
 file    kern/sys_nop.c
