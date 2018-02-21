@@ -11,6 +11,8 @@ hasCJKLanguage = true # Shorter summary
 math = true
 PygmentsCodeFences = true
 
+enableRobotsTXT = true
+
 [indexes]
 tag = "tags"
 # topic = "topics"
