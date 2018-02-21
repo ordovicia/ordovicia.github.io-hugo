@@ -24,7 +24,7 @@ rustc 1.25.0-nightly (27a046e93 2018-02-18)
 
 ```rust
 impl<T> OwnedPtr<T> {
-    pub(crate) fn as_ptr(&mut self) -> *mut T {
+    pub(crate) fn as_ptr(&self) -> *mut T {
         self.ptr.as_ptr()
     }
 }
@@ -82,6 +82,7 @@ mod tests {
     #[test]
     fn push_pop() {
         let mut v = Vec::new();
+
         const ELEM_NUM: usize = 32;
         let elems = 0..ELEM_NUM;
 
