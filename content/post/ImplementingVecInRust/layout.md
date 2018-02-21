@@ -1,5 +1,5 @@
 +++
-date = "2018-02-20"
+date = "2018-02-20T00:00:00+09:00"
 title = "Vecの実装 in Rust - 構造体レイアウト"
 tags = ["Programming", "Rust"]
 +++
@@ -93,7 +93,8 @@ struct Iter<'a, T: 'a> {
 }
 ```
 
-（出典： [The Rustnomicon](https://doc.rust-lang.org/nomicon); [現在の実装](https://github.com/rust-lang/rust/blob/27a046e9338fb0455c33b13e8fe28da78212dedc/src/libcore/slice/mod.rs#L1390) も同様）
+（出典： [The Rustnomicon](https://doc.rust-lang.org/nomicon);
+[現在の実装](https://github.com/rust-lang/rust/blob/27a046e9338fb0455c33b13e8fe28da78212dedc/src/libcore/slice/mod.rs#L1390) も同様）
 
 `PhantomData` の型引数におくものを注意深く設定することで、`PhantomData` がもつ性質をうまくコントロールできる。
 [PhantomDataの使いかたの表](https://doc.rust-lang.org/nomicon/phantom-data.html#table-of-phantomdata-patterns) にまとまっているが、
@@ -164,7 +165,8 @@ pub struct Vec<T> {
 `Vec::new()` の際、空の `Vec` にメモリを割り当てないようにすると、`Vec::ptr` や `OwnedPtr::ptr` はnullになってしまう。
 実のところ、`NonNull` がnullになってはいけないという制約は、nullをdereferenceしてはいけないという意味で、deref.しないならnullになること自体は問題ない。
 `Vec` の場合、`cap`, `len` のチェックが必要になるので、null pointer deref.の発生は防ぎやすい。
-Nullとなっている（がアライメントは整っている） `NonNull` は、[`NonNull::dangling()`](https://github.com/rust-lang/rust/blob/27a046e9338fb0455c33b13e8fe28da78212dedc/src/libcore/ptr.rs#L2506) で作れる。
+Nullとなっている（がアライメントは整っている） `NonNull` は、
+[`NonNull::dangling()`](https://github.com/rust-lang/rust/blob/27a046e9338fb0455c33b13e8fe28da78212dedc/src/libcore/ptr.rs#L2506) で作れる。
 
 ```rust
 impl<T> OwnedPtr<T> {
@@ -177,7 +179,8 @@ impl<T> OwnedPtr<T> {
 }
 ```
 
-なお、`NonNull` が持つ特性と `Send`, `Sync`, `T` の所有をすべて備える構造体として、[`Unique`](https://github.com/rust-lang/rust/blob/27a046e9338fb0455c33b13e8fe28da78212dedc/src/libcore/ptr.rs#L2336) があり、現在は使うことができる。
+なお、`NonNull` が持つ特性と `Send`, `Sync`, `T` の所有をすべて備える構造体として、
+[`Unique`](https://github.com/rust-lang/rust/blob/27a046e9338fb0455c33b13e8fe28da78212dedc/src/libcore/ptr.rs#L2336) があり、現在は使うことができる。
 しかし、[`Unique` は `NonNull` に置き換えられ、今後安定化することはない](https://github.com/rust-lang/rust/pull/46952)。
 
 [^1]: この説明はかなり簡略化されたもの。ここでのvariantは実際にはcovariantと呼ばれる。また、半順序が逆向きに伝搬するとき、**反変 (contravariant)** と言う。`fn(T)` は `T` について反変である。

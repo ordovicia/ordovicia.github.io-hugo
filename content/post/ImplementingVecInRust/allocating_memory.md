@@ -1,10 +1,11 @@
 +++
-date = "2018-02-20"
+date = "2018-02-20T00:00:01+09:00"
 title = "Vecの実装 in Rust - メモリ確保"
 tags = ["Programming", "Rust"]
 +++
 
-[前回]({{< ref "post/ImplementingVecInRust/layout" >}}) に引き続き、[The Rustnomicon](https://doc.rust-lang.org/nomicon) の [Implementing `Vec`](https://doc.rust-lang.org/nomicon/vec.html) をやってみる。
+[前回]({{< ref "post/ImplementingVecInRust/layout" >}}) に引き続き、
+[The Rustnomicon](https://doc.rust-lang.org/nomicon) の [Implementing `Vec`](https://doc.rust-lang.org/nomicon/vec.html) をやってみる。
 
 コード全体は [GitHub上のリポジトリ](https://github.com/ordovicia/rustnomicon_vec.git) にある。
 
@@ -108,7 +109,8 @@ impl<T> OwnedPtr<T> {
 }
 ```
 
-最初の要素をpushするとき（`self.cap == 0` のとき）は、[`Alloc::alloc_one<T>()`](https://github.com/rust-lang/rust/blob/27a046e9338fb0455c33b13e8fe28da78212dedc/src/liballoc/allocator.rs#L898) を利用する。
+最初の要素をpushするとき（`self.cap == 0` のとき）は、
+[`Alloc::alloc_one<T>()`](https://github.com/rust-lang/rust/blob/27a046e9338fb0455c33b13e8fe28da78212dedc/src/liballoc/allocator.rs#L898) を利用する。
 `T` 型の値を一つおける領域を確保してくれる。
 
 またpushするときは、[`Alloc::realloc_array<T>()`](https://github.com/rust-lang/rust/blob/27a046e9338fb0455c33b13e8fe28da78212dedc/src/liballoc/allocator.rs#L1014) を呼ぶ。
@@ -119,7 +121,8 @@ impl<T> OwnedPtr<T> {
 Rustでのメモリアロケーションでは、いくつか考慮すべき事項がある。
 
 `Alloc::alloc_one<T>()` などの戻り値の型は `Result<NonNull<T>, AllocErr>` である。
-OOM (Out of Memory)状態に陥るなどしてメモリ確保に失敗すると [`AllocErr`](https://github.com/rust-lang/rust/blob/27a046e9338fb0455c33b13e8fe28da78212dedc/src/liballoc/allocator.rs#L310) が返る。
+OOM (Out of Memory)状態に陥るなどしてメモリ確保に失敗すると
+[`AllocErr`](https://github.com/rust-lang/rust/blob/27a046e9338fb0455c33b13e8fe28da78212dedc/src/liballoc/allocator.rs#L310) が返る。
 
 Rustの標準ライブラリでは、メモリ確保に失敗した場合 `abort` する。
 `panic!()` でないのは、`panic!()` に伴うスタックの巻き戻し操作自体にメモリアロケーションが必要になるからである。
