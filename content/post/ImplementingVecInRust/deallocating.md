@@ -24,27 +24,26 @@ rustc 1.25.0-nightly (27a046e93 2018-02-18)
 
 `self.cap == 0` のときはメモリ確保していないので、解放もしなくてよい。
 `self.cap == 1` のときは、`pop()` することで要素をdropし、
-[`Alloc::dealloc_one<T>()`](https://github.com/rust-lang/rust/blob/27a046e9338fb0455c33b13e8fe28da78212dedc/src/liballoc/allocator.rs#L926) を使う。
+[`Alloc::dealloc_one<T>()`](https://doc.rust-lang.org/nightly/std/heap/trait.Alloc.html#method.dealloc_one) を使う。
 それ以外の場合は、すべての要素を順に `pop()` することでdropし、
-[`Alloc::dealloc_array<T>()`](https://github.com/rust-lang/rust/blob/27a046e9338fb0455c33b13e8fe28da78212dedc/src/liballoc/allocator.rs#L1051) を呼ぶ。
+[`Alloc::dealloc_array<T>()`](https://doc.rust-lang.org/nightly/std/heap/trait.Alloc.html#method.dealloc_array) を呼ぶ。
 
 ```rust
 impl<T> Drop for Vec<T> {
     fn drop(&mut self) {
-        match self.cap {
-            0 => {}
-            1 => {
-                self.pop();
-                unsafe {
-                    self.alloc.dealloc_one(self.ptr.as_non_null());
-                }
-            }
-            n => {
-                while let Some(_) = self.pop() {}
-                unsafe {
-                    if let Err(e) = self.alloc.dealloc_array(self.ptr.as_non_null(), n) {
-                        self.alloc.oom(e);
-                    }
+        if self.cap == 0 {
+            return;
+        }
+
+        while let Some(_) = self.pop() {}
+
+        unsafe {
+            if self.cap == 1 {
+                self.alloc.dealloc_one(self.ptr.as_non_null());
+            } else {
+                let e = self.alloc.dealloc_array(self.ptr.as_non_null(), self.cap);
+                if let Err(e) = e {
+                    self.alloc.oom(e);
                 }
             }
         }
@@ -53,31 +52,17 @@ impl<T> Drop for Vec<T> {
 ```
 
 なお、`T: !Drop` の場合は `pop()` を呼ぶ処理を省略できる。
-`T: Drop` かどうかは [`mem::needs_drop()`](https://github.com/rust-lang/rust/blob/27a046e9338fb0455c33b13e8fe28da78212dedc/src/libcore/mem.rs#L485) で判定できる。
+`T: Drop` かどうかは [`mem::needs_drop()`](https://doc.rust-lang.org/nightly/std/mem/fn.needs_drop.html) で判定できる。
 
 ```rust
-...
-match self.cap {
-    ...
-    1 => {
-        if mem::needs_drop::<T>() {
-            self.pop();
-        }
-        ...
-    }
-    n => {
-        if mem::needs_drop::<T>() {
-            while let Some(_) = self.pop() {}
-        }
-        ...
-    }
+if mem::needs_drop::<T>() {
+    while let Some(_) = self.pop() {}
 }
-...
 ```
 
 しかし、この最適化を施しても効果はほぼ見られなかった。
 LLVMの最適化がかなり強いらしい。
 
 ちなみに、
-[標準ライブラリの `Drop for Vec` の実装](https://github.com/rust-lang/rust/blob/27a046e9338fb0455c33b13e8fe28da78212dedc/src/libcore/vec.rs#L2108) では、
+[標準ライブラリの `Drop for Vec` の実装](https://doc.rust-lang.org/nightly/src/alloc/vec.rs.html#2108-2116) では、
 `ptr::drop_in_place()` を使って `Drop for [T]` にフォールバックしているようだ。

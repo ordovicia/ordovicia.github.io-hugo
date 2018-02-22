@@ -25,7 +25,7 @@ rustc 1.25.0-nightly (27a046e93 2018-02-18)
 
 まず、上で定義した `Vec` 構造体を修正する必要がある。
 新しいメモリアロケータAPIでは、アロケータが構造体として提供されるようになった（もともとは `heap::allocate()` のような関数だった）。
-今回はデフォルトのアロケータ [`std::heap::Heap`](https://github.com/rust-lang/rust/blob/27a046e9338fb0455c33b13e8fe28da78212dedc/src/liballoc/heap.rs#L78) を用いる。
+今回はデフォルトのアロケータ [`heap::Heap`](https://doc.rust-lang.org/nightly/std/heap/struct.Heap.html) を用いる。
 
 ```rust
 use std::heap::Heap;
@@ -63,6 +63,21 @@ impl<T> Vec<T> {
 先に実装を見せる。
 
 ```rust
+impl<T: ?Sized> OwnedPtr<T> {
+    pub(crate) fn with_non_null(ptr: NonNull<T>) -> Self {
+        OwnedPtr {
+            ptr,
+            _marker: PhantomData,
+        }
+    }
+
+    pub(crate) fn as_non_null(&self) -> NonNull<T> {
+        self.ptr
+    }
+}
+```
+
+```rust
 use std::heap::{Alloc, Heap};
 
 use owned_ptr::OwnedPtr;
@@ -94,26 +109,13 @@ impl<T> Vec<T> {
         self.cap = new_cap;
     }
 }
-
-impl<T> OwnedPtr<T> {
-    pub(crate) fn with_non_null(ptr: NonNull<T>) -> Self {
-        OwnedPtr {
-            ptr,
-            _marker: PhantomData,
-        }
-    }
-
-    pub(crate) fn as_non_null(&self) -> NonNull<T> {
-        self.ptr
-    }
-}
 ```
 
 最初の要素をpushするとき（`self.cap == 0` のとき）は、
-[`Alloc::alloc_one<T>()`](https://github.com/rust-lang/rust/blob/27a046e9338fb0455c33b13e8fe28da78212dedc/src/liballoc/allocator.rs#L898) を利用する。
+[`Alloc::alloc_one<T>()`](https://doc.rust-lang.org/nightly/std/heap/trait.Alloc.html#method.alloc_one) を利用する。
 `T` 型の値を一つおける領域を確保してくれる。
 
-またpushするときは、[`Alloc::realloc_array<T>()`](https://github.com/rust-lang/rust/blob/27a046e9338fb0455c33b13e8fe28da78212dedc/src/liballoc/allocator.rs#L1014) を呼ぶ。
+またpushするときは、[`Alloc::realloc_array<T>()`](https://doc.rust-lang.org/nightly/std/heap/trait.Alloc.html#method.realloc_array) を呼ぶ。
 要素を指定の個数おける領域を再確保する。
 
 ### メモリ確保失敗
@@ -122,12 +124,12 @@ Rustでのメモリアロケーションでは、いくつか考慮すべき事�
 
 `Alloc::alloc_one<T>()` などの戻り値の型は `Result<NonNull<T>, AllocErr>` である。
 OOM (Out of Memory)状態に陥るなどしてメモリ確保に失敗すると
-[`AllocErr`](https://github.com/rust-lang/rust/blob/27a046e9338fb0455c33b13e8fe28da78212dedc/src/liballoc/allocator.rs#L310) が返る。
+[`AllocErr`](https://doc.rust-lang.org/nightly/std/heap/enum.AllocErr.html) が返る。
 
 Rustの標準ライブラリでは、メモリ確保に失敗した場合 `abort` する。
 `panic!()` でないのは、`panic!()` に伴うスタックの巻き戻し操作自体にメモリアロケーションが必要になるからである。
 
-この `abort` 処理は [`Alloc::oom()`](https://github.com/rust-lang/rust/blob/27a046e9338fb0455c33b13e8fe28da78212dedc/src/liballoc/allocator.rs#L552) で実行できる。
+この `abort` 処理は [`Alloc::oom()`](https://doc.rust-lang.org/nightly/std/heap/trait.Alloc.html#method.oom) で実行できる。
 
 ### LLVMのメモリアロケーション
 

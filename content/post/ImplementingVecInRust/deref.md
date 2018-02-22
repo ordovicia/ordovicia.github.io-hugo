@@ -23,7 +23,7 @@ rustc 1.25.0-nightly (27a046e93 2018-02-18)
 `Vec` の中身は同じ型を集めた配列なので、スライスへderef.するのは自然である。
 
 そこで、`Deref<Target = [T]> for Vec<T>` を実装する。
-簡単で、[`std::slice::from_raw_parts()`](https://github.com/rust-lang/rust/blob/27a046e9338fb0455c33b13e8fe28da78212dedc/src/libcore/slice/mod.rs#L2692) を呼ぶだけである。
+簡単で、[`slice::from_raw_parts()`](https://doc.rust-lang.org/nightly/alloc/slice/fn.from_raw_parts.html) を呼ぶだけである。
 はじめのアドレスと要素数を渡すとスライスを作ってくれる。
 要素数が0のときも正しく動作するようだ。
 
@@ -40,7 +40,7 @@ impl<T> Deref for Vec<T> {
 ```
 
 `&mut [T]` にderef.する `DerefMut` 版もつくっておく。
-今度は [`std::slice::from_raw_parts_mut()`](https://github.com/rust-lang/rust/blob/27a046e9338fb0455c33b13e8fe28da78212dedc/src/libcore/slice/mod.rs#L2705) を呼ぶ。
+今度は [`slice::from_raw_parts_mut()`](https://doc.rust-lang.org/nightly/alloc/slice/fn.from_raw_parts_mut.html) を呼ぶ。
 `DerefMut: Deref` なので、`Target` の指定は必要ない。
 
 ```rust

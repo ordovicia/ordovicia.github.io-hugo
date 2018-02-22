@@ -23,7 +23,7 @@ rustc 1.25.0-nightly (27a046e93 2018-02-18)
 便利メソッドとして `OwnedPtr` から `*mut T` を取り出す関数を作っておく。
 
 ```rust
-impl<T> OwnedPtr<T> {
+impl<T: ?Sized> OwnedPtr<T> {
     pub(crate) fn as_ptr(&self) -> *mut T {
         self.ptr.as_ptr()
     }

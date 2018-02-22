@@ -58,8 +58,6 @@ fn main() {
 }
 ```
 
-（出典： [The Rustnomicon](https://doc.rust-lang.org/nomicon)）
-
 `string` のlifetimeを `'s` と名付けることにする。
 `&'a T` は `'a` について共変なので、`&'static str` は `&'s str` に置き換えられる。
 従って、もし `&mut T` が `T` について共変だったとすると、 `&mut &'static str` は `&mut &'s str` の部分型となる。
@@ -93,8 +91,7 @@ struct Iter<'a, T: 'a> {
 }
 ```
 
-（出典： [The Rustnomicon](https://doc.rust-lang.org/nomicon);
-[現在の実装](https://github.com/rust-lang/rust/blob/27a046e9338fb0455c33b13e8fe28da78212dedc/src/libcore/slice/mod.rs#L1390) も同様）
+（[現在の実装](https://doc.rust-lang.org/nightly/src/core/slice/mod.rs.html#1390-1394) も同様）
 
 `PhantomData` の型引数におくものを注意深く設定することで、`PhantomData` がもつ性質をうまくコントロールできる。
 [PhantomDataの使いかたの表](https://doc.rust-lang.org/nomicon/phantom-data.html#table-of-phantomdata-patterns) にまとまっているが、
@@ -134,8 +131,8 @@ pub struct Vec<T> {
 * `ptr` はnullにならないことを型レベルで保証したい
     * [null-pointer-optimization](https://doc.rust-lang.org/nomicon/repr-rust.html) のため、
 
-そこで、`ptr` として `std::ptr::NonNull` と `PhantomData` を組み合わせて用いることにする。
-[`NonNull`](https://github.com/rust-lang/rust/blob/27a046e9338fb0455c33b13e8fe28da78212dedc/src/libcore/ptr.rs#L2486) は1.25.0から安定化される生ポインタのラッパ構造体で、
+そこで、`ptr` として `ptr::NonNull` と `PhantomData` を組み合わせて用いることにする。
+[`NonNull`](https://doc.rust-lang.org/nightly/std/ptr/struct.NonNull.html) は1.25.0から安定化される生ポインタのラッパ構造体で、
 
 * `T` について共変
 * Nullになってはいけない
@@ -147,13 +144,13 @@ pub struct Vec<T> {
 use std::marker::PhantomData;
 use std::ptr::NonNull;
 
-pub(crate) struct OwnedPtr<T> {
+pub(crate) struct OwnedPtr<T: ?Sized> {
     ptr: NonNull<T>,
     _marker: PhantomData<T>,
 }
 
-unsafe impl<T: Send> Send for OwnedPtr<T> {}
-unsafe impl<T: Sync> Sync for OwnedPtr<T> {}
+unsafe impl<T: ?Sized + Send> Send for OwnedPtr<T> {}
+unsafe impl<T: ?Sized + Sync> Sync for OwnedPtr<T> {}
 
 pub struct Vec<T> {
     ptr: OwnedPtr<T>,
@@ -166,7 +163,7 @@ pub struct Vec<T> {
 実のところ、`NonNull` がnullになってはいけないという制約は、nullをdereferenceしてはいけないという意味で、deref.しないならnullになること自体は問題ない。
 `Vec` の場合、`cap`, `len` のチェックが必要になるので、null pointer deref.の発生は防ぎやすい。
 Nullとなっている（がアライメントは整っている） `NonNull` は、
-[`NonNull::dangling()`](https://github.com/rust-lang/rust/blob/27a046e9338fb0455c33b13e8fe28da78212dedc/src/libcore/ptr.rs#L2506) で作れる。
+[`NonNull::dangling()`](https://doc.rust-lang.org/nightly/std/ptr/struct.NonNull.html#method.dangling) で作れる。
 
 ```rust
 impl<T> OwnedPtr<T> {
@@ -180,7 +177,7 @@ impl<T> OwnedPtr<T> {
 ```
 
 なお、`NonNull` が持つ特性と `Send`, `Sync`, `T` の所有をすべて備える構造体として、
-[`Unique`](https://github.com/rust-lang/rust/blob/27a046e9338fb0455c33b13e8fe28da78212dedc/src/libcore/ptr.rs#L2336) があり、現在は使うことができる。
+[`ptr::Unique`](https://doc.rust-lang.org/nightly/std/ptr/struct.Unique.html) があり、現在は使うことができる。
 しかし、[`Unique` は `NonNull` に置き換えられ、今後安定化することはない](https://github.com/rust-lang/rust/pull/46952)。
 
 [^1]: この説明はかなり簡略化されたもの。ここでのvariantは実際にはcovariantと呼ばれる。また、半順序が逆向きに伝搬するとき、**反変 (contravariant)** と言う。`fn(T)` は `T` について反変である。

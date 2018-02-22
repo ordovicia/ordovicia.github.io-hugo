@@ -29,7 +29,7 @@ rustc 1.25.0-nightly (27a046e93 2018-02-18)
 実装は以下のようになる。
 インデックスの範囲チェック後、確保したメモリが足りなければ再確保する。
 `index < self.len` のとき（つまり、`index == self.len` でないとき）は、もともとあった要素のシフトが必要になる。
-この操作は [`ptr::copy()`](https://github.com/rust-lang/rust/blob/27a046e9338fb0455c33b13e8fe28da78212dedc/src/libcore/intrinsics.rs#L1033) でできる。
+この操作は [`ptr::copy()`](https://doc.rust-lang.org/nightly/std/ptr/fn.copy.html) でできる。
 `ptr::copy()` はC言語でいう `memmove` で、アドレスからアドレスへ指定要素だけその中身をコピーする。
 コピー元・先で領域がオーバーラップしていても正しく扱ってくれる。
 もともとあった要素をシフトした後は、挿入する要素をメモリに書き込み、`len` をインクリメントして終了である。
@@ -45,6 +45,7 @@ impl<T> Vec<T> {
 
         unsafe {
             if index < self.len {
+                // ptr::copy(src, dest, len): "copy from source to dest len elems"
                 ptr::copy(
                     self.ptr.as_ptr().offset(index as isize),
                     self.ptr.as_ptr().offset(index as isize + 1),
