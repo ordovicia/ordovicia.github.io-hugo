@@ -45,8 +45,6 @@ rustc 1.25.0-nightly (27a046e93 2018-02-18)
 ```rust
 use std::heap::Heap;
 
-use owned_ptr::OwnedPtr;
-
 pub struct IntoIter<T> {
     pub(super) buf: OwnedPtr<T>,
     pub(super) cap: usize,
@@ -61,8 +59,6 @@ pub struct IntoIter<T> {
 従って、`Vec::drop()` が呼ばれないように [`mem::forget()`](https://doc.rust-lang.org/nightly/std/mem/fn.forget.html) を呼ぶ必要がある。
 
 ```rust
-use into_iter::IntoIter;
-
 impl<T> for Vec<T> {
     pub fn into_iter(self) -> IntoIter<T> {
         let Vec {

@@ -80,8 +80,6 @@ impl<T: ?Sized> OwnedPtr<T> {
 ```rust
 use std::heap::{Alloc, Heap};
 
-use owned_ptr::OwnedPtr;
-
 impl<T> Vec<T> {
     fn grow(&mut self) {
         let (new_cap, ptr) = if self.cap == 0 {
