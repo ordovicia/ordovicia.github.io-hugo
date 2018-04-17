@@ -4,4 +4,4 @@ title = "About"
 sidemenu = true
 +++
 
-Empty yet.
+[CV](https://docs.google.com/document/d/10xp8FOU1ymsPdn20SMaDSek5AnCM1HAk6_MJx0SoEds/edit?usp=sharing)
