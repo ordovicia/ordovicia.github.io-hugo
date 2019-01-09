@@ -1,7 +1,7 @@
 baseurl = "/"
 title = "外部記憶"
 author = "Hidehito Yabuuchi"
-copyright = "&copy; 2017. All rights reserved."
+copyright = "&copy; 2017-2019. All rights reserved."
 theme = "blackburn"
 canonifyurls = true
 paginate = 5
@@ -21,7 +21,6 @@ tag = "tags"
 subtitle = ""
 dateFormat = "02 Jan 2006"
 
-[menu]
 [[menu.main]]
 name = "Home"
 pre = "<i class='fa fa-home fa-fw'></i>"
